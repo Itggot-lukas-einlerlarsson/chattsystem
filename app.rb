@@ -6,11 +6,10 @@ class App < Sinatra::Base
 
 	 post '/login' do
     "Hello World"
-		db = SQLite3::Database.new("db/chatsystem.sqlite")
+		db = SQLite3::Database.new("db/chatsystem.db")
 		username = params[:username]
 		password = params[:password]
-		result = db.execute["SELECT * id FROM Users Where Username"]
-		if
+		result = db.execute["SELECT id FROM Users WHERE Username=?",username]
 	 end
 
 	 get '/register' do
@@ -18,15 +17,11 @@ class App < Sinatra::Base
 	 end
 
 	 post '/register' do
-		db = SQLite3::Database.new("db/chatsystem.sqlite")
+		db = SQLite3::Database.new("db/chatsystem.db")
 		username = params[:username]
 		password = params[:password]
-		confirmation_password = params[:confirmation_password]
 		email = params[:email]
-
-		result = db.execute["SELECT * id FROM Users"]
-
-		if
-		db.execute("INSERT INTO Users (username, password) VALUES (?,?)", [username, password])
-	 end
+		db.execute("INSERT INTO Users(username,password,email) VALUES(?,?,?)",[username,password,email])
+		redirect('/')
+	end
 end
